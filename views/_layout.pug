@@ -1,0 +1,45 @@
+include _mixins/_nav
+
+<!DOCTYPE html>
+html(lang="en")
+head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    title Summer Photos
+    link(rel="stylesheet", href="/static/styles/style.css")    
+    link(rel="stylesheet", href="/libs/bootstrap/dist/css/bootstrap.css")  
+    link(href="https://fonts.googleapis.com/css?family=Francois+One" rel="stylesheet")
+    link(href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet")
+    link(rel="shortcut icon" type="image/x-icon", href="/static/images/favicon.ico")
+    //- link(rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
+    //- link(rel="stylesheet" href="/resources/demos/style.css")
+    block scripts
+body
+    header.navbar.navbar-fixed-top
+        .row
+            #logo.col-md-2.col-md-offset-1.text-left
+                a(href="/home") Keep Your Summer
+            #nav.col-md-7.col-md-offset-2
+                .row
+                    #menu.col-md-6
+                        +navigation
+                    if !user
+                        #signin.col-md-6
+                            a(href="/login")
+                                    button#signIn.btn.btn-defoult(type="") Sign In
+                            a(href="/register")
+                                    button#signUp.btn.btn-defoult(type="") Sign Up
+                    if user
+                        #loged.col-md-6
+                            a(href="/user/profile")
+                                span.glyphicon.glyphicon-user
+                                    span User Profile
+                            a(href="/logout")
+                                    button.btn.btn-defoult(type="") Sign Out
+    #wrapper
+        block container
+    footer.row.navbar.navbar-fixed-bottom
+        .col-md-5.col-md-offset-1.text-left
+            | &copy; Copyright 2017 Web Application with Node.js
+        .col-md-6
