@@ -16,7 +16,7 @@ block container
             .col-md-8
                 .row
                     .col-md-12
-                        img(src="/static/images/camera.jpg")
+                        img(src="/static/images/avatar.png")
                     .col-md-12
                         .row
                             .col-md-3.col-md-offset-2 First Name : 
@@ -29,15 +29,17 @@ block container
                             .col-md-7 #{user.email}
                             .col-md-3.col-md-offset-2 Registered: 
                             .col-md-7.date #{user.date}
-                            .col-md-3.col-md-offset-2 Your Favourites:
+                            .col-md-3.col-md-offset-2 Your Favorites:
                             .col-md-7
-                                a(href="/user/favourites") See your favourites
+                                if user.favourites.length
+                                    a(href="/user/favourites") Go to favorites
+                                else
+                                    div 
+                                        | You have no favorites list yet.
                             .col-md-3.col-md-offset-2 Your Publications:
                             .col-md-7
                                 if user.publications.length
-                                    each publication in user.publications
-                                        div
-                                            a(href="/publications/" + publication._id) #{publication.title}
+                                    a(href="/user/publications") Go to your publications
                                 else
                                     div 
                                         | You have no publications yet.

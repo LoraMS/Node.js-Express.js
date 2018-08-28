@@ -12,6 +12,9 @@ head
     link(href="https://fonts.googleapis.com/css?family=Francois+One" rel="stylesheet")
     link(href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet")
     link(rel="shortcut icon" type="image/x-icon", href="/static/images/favicon.ico")
+    link(rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/css/toastr.min.css")
+    script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js")
+    script(src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js")
     //- link(rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
     //- link(rel="stylesheet" href="/resources/demos/style.css")
     block scripts
@@ -19,19 +22,19 @@ body
     header.navbar.navbar-fixed-top
         .row
             #logo.col-md-2.col-md-offset-1.text-left
-                a(href="/home") Keep Your Summer
-            #nav.col-md-7.col-md-offset-2
+                a(href="/home") Summer in Photos
+            #nav.col-md-7.col-md-offset-1
                 .row
-                    #menu.col-md-6
+                    #menu.col-md-8
                         +navigation
                     if !user
-                        #signin.col-md-6
+                        #signin.col-md-4
                             a(href="/login")
                                     button#signIn.btn.btn-defoult(type="") Sign In
                             a(href="/register")
                                     button#signUp.btn.btn-defoult(type="") Sign Up
                     if user
-                        #loged.col-md-6
+                        #loged.col-md-4
                             a(href="/user/profile")
                                 span.glyphicon.glyphicon-user
                                     span User Profile
@@ -39,6 +42,7 @@ body
                                     button.btn.btn-defoult(type="") Sign Out
     #wrapper
         block container
+        != toasts
     footer.row.navbar.navbar-fixed-bottom
         .col-md-5.col-md-offset-1.text-left
             | &copy; Copyright 2017 Web Application with Node.js

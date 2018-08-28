@@ -23,7 +23,7 @@ block container
                         each element in user.favourites
                                 .publications-container-info.col-md-6
                                     div.text-right
-                                        button(type="button" class="btn btn-default btn-xs remove-favourite-user-page" data-toggle="popover" data-content="Remove")
+                                        button(type="button" class="btn btn-default btn-xs remove-favourite-user-page" data-toggle="popover" data-content="Remove" data-id=element._id)
                                                 span(class="glyphicon glyphicon-remove" aria-hidden="true")
                                         img(src="/" + element.image, alt="image")
                                     .text-center

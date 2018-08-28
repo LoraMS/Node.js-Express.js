@@ -7,7 +7,7 @@ block scripts
 
 block container 
     .container.contact-form
-        != messages()
+        != toasts
         .well.well-sm
             form(action="/contact" method="POST")
                 .row
