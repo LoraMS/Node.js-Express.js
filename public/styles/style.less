@@ -554,12 +554,27 @@ body {
             top: 80px;
             left: 20px;
             font-size: 12px;
+            input{
+                &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+                    font-weight: normal;
+                  }
+                &::-moz-placeholder { /* Firefox 19+ */
+                    font-weight: normal;
+                  }
+                &:-ms-input-placeholder { /* IE 10+ */
+                    font-weight: normal;
+                  }
+                &:-moz-placeholder { /* Firefox 18- */
+                    font-weight: normal;
+                  }
+            }
         }
         .reg-form, .signin-form {
             position: relative;
-            top: 80px;
+            top: 100px;
             left: 400px;
             font-size: 12px;
+            margin-bottom: 50px;
             .well {
                 width: 350px;
             }
@@ -567,6 +582,9 @@ body {
                 width: 150px;
                 height: 150px;
                 margin: 10px 80px;
+            }
+            #btn-signin{
+                margin-bottom: 10px;
             }
         }
         .publication-form, .guide-form {
@@ -606,16 +624,16 @@ body {
             .col-md-8 {
                 width: 600px;
                 img {
-                    width: 450px;
-                    height: 280px;
-                    margin: 10px 80px;
+                    max-width: 100%;
+                    height: auto;
+                    margin: 10px 100px;
                 }
                 a {
                     color: #000;
                 }
             }
         }
-        .favourites {
+        .favourites, .user-publications {
             position: relative;
             top: 80px;
             left: -10px;
@@ -641,7 +659,7 @@ body {
                     .text-center {
                         padding: 10px;
                         background-color: rgb(238, 238, 238);
-                        height: 120px;
+                        height: 100px;
                         .date-postBy {
                             font-size: 12px;
                         }
@@ -649,11 +667,57 @@ body {
                 }
             }
         }
-        .error {
+        .user-publications {
+            position: relative;
+            top: 80px;
+            left: -10px;
+            font-size: 14px;
+            padding-bottom: 50px;
+            font-family: 'Lora', serif;
+            line-height: 35px;
+            .col-md-8 {
+                width: 600px;
+                .publications-container-info {
+                    padding: 20px;
+                    img {
+                        width: 100%;
+                        height: 200px;
+                    }
+                    a {
+                        color: #000;
+                    }
+                    .text-center {
+                        padding: 10px;
+                        background-color: rgb(238, 238, 238);
+                        height: 60px;
+                    }
+                }
+            }
+        }
+        .error-page {
             margin-top: 80px;
             img {
                 width: 40%;
             }
+        }
+        .error{
+            list-style-type: none;
+            position: relative;
+            width: 350px;
+            li{
+                color: #a94442;
+                background-color: #f2dede;
+                border:1px solid #ebccd1;
+                border-radius: 4px;
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+        }
+        .error-reg-form{
+            width: 350px;
+        }
+        .glyphicon-exclamation-sign{
+            margin-right: 10px;
         }
     }
     footer {
@@ -661,6 +725,6 @@ body {
         color: #fff;
         font-size: 14px;
         font-family: 'Francois One', sans-serif;
-        padding-top: 10px;
+        padding-top: 15px;
     }
 }
