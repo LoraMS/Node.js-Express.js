@@ -1,34 +1,50 @@
 $(function () {
-    var pathname = window.location.pathname;
-    var id = pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
-    var data = {
-        'id': id,
-    };
+    // var pathname = window.location.pathname;
+    // var id = pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
+    // var data = {
+    //     'id': id,
+    // };
 
-    $('.like').on('click', function () {
+    $('.like').on('click', function (e) {
+        var target = $(e.target);
+        console.log(target);
+        var id = target.parent().attr('data-id');
+        console.log(id);
+        var data = {
+            'id': id,
+        };
         $.ajax({
             method: 'POST',
             url: '/publications/like',
             data: data,
             success: ((data) => {
-                console.log('success');
+                toastr.success('You like this pulication!');
+                window.location.reload();        
             }),
             error: ((error) => {
-                console.log(error);
+                toastr.error(error);
             })
         });
     });
 
-    $('.dislike').on('click', function () {
+    $('.dislike').on('click', function (e) {
+        var target = $(e.target);
+        console.log(target);
+        var id = target.parent().attr('data-id');
+        console.log(id);
+        var data = {
+            'id': id,
+        };
         $.ajax({
             method: 'POST',
             url: '/publications/dislike',
             data: data,
             success: ((data) => {
-                console.log('success');
+                toastr.success('You dislike this pulication!');
+                window.location.reload(); 
             }),
             error: ((error) => {
-                console.log(error);
+                toastr.error(error);
             })
         });
     });

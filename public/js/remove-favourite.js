@@ -1,7 +1,9 @@
 $(function () {
-    $('.remove-favourite-user-page').on('click', function () {
-        $this = $(this);
-        var id = $this.parent().next().find('a').attr('href').substring(14);
+    $('.remove-favourite-user-page').on('click', function (e) {
+        // $this = $(this);
+        // var id = $this.parent().next().find('a').attr('href').substring(14);
+        var target = $(e.target);
+        var id = target.parent().attr('data-id');
         var data = {
             id: id
         };
@@ -11,11 +13,11 @@ $(function () {
             url: '/user/favourites',
             data: data,
             success: ((data) =>  {
-                // location.reload();
+                toastr.success('Publication successfully removed from favorites list!');
                 window.location.reload();
             }),
             error: ((error) => {
-                // console.log(error);
+               toastr.error(error, 'Please try again.');
                 window.location.reload();
             })
         });
@@ -23,28 +25,28 @@ $(function () {
 
 });
 
-$(function () {
-    $('.remove-favourite').on('click', function () {
-        $this = $(this);
-        var pathname = window.location.pathname;
-        var id = pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
-        var data = {
-            id: id
-        };
+// $(function () {
+//     $('.remove-favourite').on('click', function () {
+//         $this = $(this);
+//         var pathname = window.location.pathname;
+//         var id = pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
+//         var data = {
+//             id: id
+//         };
         
-        $.ajax({
-            method: 'DELETE',
-            url: '/user/favourites',
-            data: data,
-            success: ((data) =>  {
-                window.location.reload();   
-            }),
-            error: ((error) => {
-                window.location.reload();
-            })
-        });
-    });
-});
+//         $.ajax({
+//             method: 'DELETE',
+//             url: '/user/favourites',
+//             data: data,
+//             success: ((data) =>  {
+//                 window.location.reload();   
+//             }),
+//             error: ((error) => {
+//                 window.location.reload();
+//             })
+//         });
+//     });
+// });
 
 
 // $(function () {
