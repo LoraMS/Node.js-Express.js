@@ -8,31 +8,42 @@ module.exports = function(data) {
         getUserFavourites(req, res) {
             return res.render('user/favourites');
         },
+        getUserPublications(req, res) {
+            return res.render('user/publications');
+        },
         addUserFavourites(req, res) {
             const userId = req.user._id;
             const id = req.body.id;
+            const responseMessage = {
+                message: '',
+            };
 
             return data.users.findById(userId)
                 .then((user) => {
                     user.favourites = user.favourites || [];
 
-                    if (user.favourites.filter((x) => JSON.stringify(x._id) === JSON.stringify(new ObjectId(id))).length > 0) { // eslint-disable-line
-                        return Promise.reject(`This publication
-                         is already in your favourites.`);
-                    }
-                    user.favourites.push({
-                        _id: new ObjectId(id),
-                        image: req.body.image,
-                        title: req.body.title,
-                        date: req.body.date,
-                        publisher: req.body.publisher,
-                    });
+                    const isAlreadyAdded = user.favourites.filter((x) => JSON.stringify(x._id) === JSON.stringify(new ObjectId(id))).length > 0;
 
-                    return data.users.updateById(user);
+                    if (!isAlreadyAdded) {
+                        user.favourites.push({
+                            _id: new ObjectId(id),
+                            image: req.body.image,
+                            title: req.body.title,
+                            date: req.body.date,
+                            publisher: req.body.publisher,
+                        });
+    
+                        responseMessage.message =  'not added';
+                        return data.users.updateById(user);
+                    }
+
+                    responseMessage.message = 'already added';
+                    return Promise.resolve();                    
                 })
                 .then(() => {
-                    req.flash('info',
-                        'Your favourites was added successfully!');
+                    // req.flash('info',
+                    //     'Your favourites was added successfully!');
+                    res.status(200).json(responseMessage);
                     return res.redirect('back');
                 })
                 .catch((err) => {

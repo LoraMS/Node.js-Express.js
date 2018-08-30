@@ -11,6 +11,9 @@ module.exports = function(app, data) {
         .get('/favourites', (req, res) => {
             return controller.getUserFavourites(req, res);
         })
+        .get('/publications', (req, res) => {
+            return controller.getUserPublications(req, res);
+        })
         .post('/favourites', (req, res) => {
             return controller.addUserFavourites(req, res);
         })
