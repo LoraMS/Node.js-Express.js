@@ -6,7 +6,13 @@ const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const favicon = require('serve-favicon');
+const flash = require('connect-flash');
+const expressValidator = require('express-validator');
+const expressSession = require('express-session');
+const toastr = require('express-toastr');
+const config = require('./../configurations');
 
 const init = (data) => {
     const app = express();
@@ -29,6 +35,22 @@ const init = (data) => {
     app.use(require('connect-flash')());
     app.use((req, res, next) => {
         res.locals.messages = require('express-messages')(req, res);
+        next();
+    });
+
+    app.use(expressValidator());
+    app.use(cookieParser());
+    app.use(expressSession({
+        secret: config.sessionSecret,
+        saveUninitialized: true,
+        resave: true
+    }));
+    app.use(flash());
+
+    app.use(toastr());
+    app.use(function (req, res, next)
+    {
+        res.locals.toasts = req.toastr.render();
         next();
     });
 

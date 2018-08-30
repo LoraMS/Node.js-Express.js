@@ -1,7 +1,7 @@
 const MOST_POPULAR_COUNT = 4;
 const moment = require('moment');
 
-module.exports = function(data) {
+module.exports = function (data) {
     return {
         getAll(req, res) {
             return data.publishers.getAll()
@@ -20,9 +20,13 @@ module.exports = function(data) {
                     if (!publisher) {
                         return res.render('errors/not-found');
                     }
-                    return res.render('publishers/publisher', {
+
+                    res.render('publishers/publisher', {
                         model: publisher,
+                        success: req.session.success,
+                        errors: req.session.errors
                     });
+                    req.session.errors = null;
                 });
         },
         getMostPopolarPublishers(req, res) {
@@ -35,29 +39,26 @@ module.exports = function(data) {
                         });
                 });
         },
-            addComment(req, res) {
-                const comment = {
-                    firstname: req.body.firstname,
-                    lastname: req.body.lastname,
-                    date: moment().format('LL'),
-                    text: req.body.textComment,
-                };
-                const id = req.params.id;
+        addComment(req, res) {
+            const textComment = req.body.textComment;
+            const comment = {
+                firstname: req.user.firstname,
+                lastname: req.user.lastname,
+                date: moment().format('LL'),
+                text: textComment,
+            };
+            const id = req.params.id;
 
-                 if (comment.firstname === 'undefined' ||
-                     typeof comment.firstname !== 'string') {
-                    return Promise.reject('Invalid name. Please enter again!');
-                }
+            req.checkBody("textComment").notEmpty().withMessage("Comment is required.").isLength({ min: 2 }).withMessage("Comment must be at least 2 symbols long.").trim();
 
-                if (comment.lastname === 'undefined' ||
-                     typeof comment.lastname !== 'string') {
-                    return Promise.reject('Invalid name. Please enter again!');
-                }
-
-                if (comment.text === 'undefined' ||
-                     typeof comment.text !== 'string') {
-                    return Promise.reject('Comment must be a rext');
-                }
+            var errors = req.validationErrors();
+            if (errors) {
+                req.session.errors = errors;
+                req.session.success = false;
+                res.redirect('/publishers/' + id);
+            }
+            else {
+                req.session.success = true;
 
                 return data.publishers.getById(id)
                     .then((dbPublisher) => {
@@ -67,14 +68,14 @@ module.exports = function(data) {
                         return data.publishers.updateById(dbPublisher);
                     })
                     .then(() => {
-                        req.flash('info',
-                            'Your comment was added successfully!'); // eslint-disable-line
+                        req.toastr.success('Your comment was added successfully!');
                         return res.redirect('/publishers/' + id);
                     })
-                    .catch((err) => {
-                        req.flash('error', err);
+                    .catch((error) => {
+                        req.toastr.error(error);
                         return res.status(400);
                     });
-            },
+            }
+        },
     };
 };
