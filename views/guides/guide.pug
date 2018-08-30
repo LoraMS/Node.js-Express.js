@@ -5,9 +5,11 @@ block scripts
     script(src="/libs/bootstrap/dist/js/bootstrap.js")
     script(src="/libs/moment/moment.js")
     script(src="/static/js/format-date.js") 
+    script(src="/static/js/popover.js")
     script(src="/static/js/latest.js")    
     script(src="/static/js/popular.js")
-    script(src="/static/js/destinations.js")  
+    script(src="/static/js/destinations.js")
+    script(src="/static/js/remove-guide.js") 
 
 block container  
     .guides.container
@@ -17,9 +19,13 @@ block container
             .col-md-8
                 .single-guide-container
                     h3.text-center
-                        |   #{model.country} Travel Guide
+                        |   #{model.country} Travel Guide | 
+                        span#guide-destination #{model.destination}
                     p
                         |    #{model.info}
+                    if user.role === "admin"
+                        button(type="button" class="btn btn-default btn-xs remove" data-toggle="popover" data-content="Remove guide" data-id=model._id)
+                            span(class="glyphicon glyphicon-remove" aria-hidden="true")
                     img(src = "/" + model.image, alt="image")
                     h4.text-center Typical Costs
                     p

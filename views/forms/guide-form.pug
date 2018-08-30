@@ -4,7 +4,11 @@ block scripts
     script(src="/libs/bootstrap/dist/js/bootstrap.js")
 block container
     .guide-form.container
-        != messages()
+        if errors 
+            for error in errors
+                p.alert.alert-danger
+                    span(class="glyphicon glyphicon-exclamation-sign" aria-hidden="true") 
+                    != error.msg
         .well.well-sm
             h3.text-center Add Guide
             form(action="/guides" method="POST" enctype="multipart/form-data")
@@ -18,10 +22,10 @@ block container
                                     input.form-control#title(type="text" name="country" placeholder="Enter country" required="required")
                         .form-group
                             label(for="info") Enter short info
-                                textarea#info.form-control(name="info" placeholder="Short info" rows="3" cols="25")
+                                textarea#info.form-control(name="info" placeholder="Short info" rows="3" cols="25" required="required")
                         .form-group
                             label(for="image") Add image
-                                input#image1(type="file" name="image")
+                                input#image1(type="file" name="image" required="required")
                         h6
                             |  Choose destination
                         .destinations-form
@@ -52,16 +56,16 @@ block container
                     .col-md-6
                         .form-group
                             label(for="accommodation") Enter accommodation description
-                                textarea#accommodation.form-control(name="accommodation" placeholder="Accommodation description" rows="3" cols="25")
+                                textarea#accommodation.form-control(name="accommodation" placeholder="Accommodation description" rows="3" cols="25" required="required")
                         .form-group
                             label(for="food") Enter food description
-                                textarea#food.form-control(name="food" placeholder="Food description" rows="3" cols="25")
+                                textarea#food.form-control(name="food" placeholder="Food description" rows="3" cols="25" required="required")
                         .form-group
                             label(for="transportation") Enter transportation description
-                                textarea#transportation.form-control(name="transportation" placeholder="Transportation description" rows="3" cols="25")
+                                textarea#transportation.form-control(name="transportation" placeholder="Transportation description" rows="3" cols="25" required="required")
                         .form-group
                             label(for="activities") Enter activities description
-                                textarea#activities.form-control(name="activities" placeholder="Activities description" rows="3" cols="25")
+                                textarea#activities.form-control(name="activities" placeholder="Activities description" rows="3" cols="25" required="required")
                     .col-md-11
                         button(type="submit" id="addGuide" class="btn btn-default pull-right add-guide") 
                             |   Add Guide                    

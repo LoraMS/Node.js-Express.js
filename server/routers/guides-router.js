@@ -34,10 +34,12 @@ module.exports = function(app, data) {
         })
         .get('/:id', (req, res) => {
             return controller.getById(req, res);
-        
        })
        .post('/', upload.single("image"), (req, res) => {
         return controller.create(req, res);
+        })
+        .delete('/', (req, res) => {
+            return controller.removeGuide(req, res);
         });
 
     app.use('/guides', router);
