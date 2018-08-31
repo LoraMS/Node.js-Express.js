@@ -18,12 +18,12 @@ const init = (app, { users }) => {
         return users.findByUsername(username)
             .then((user) => {
                 if (!user) {
-                    return done(null, false, { message: 'User not exist' });
+                    return done(null, false, { message: 'User not exist!' });
                 }
 
                 if (user.username !== username) {
                         return done(null, false,
-                            { message: 'Incorrect username or password' });
+                            { message: 'Incorrect username or password!' });
                     }
 
                 const passHash = encryption

@@ -11,13 +11,15 @@ module.exports = function(app, data) {
         .get('/login', (req, res) => {
             return controller.getLoginForm(req, res);
         })
-        .post('/login',
-            passport.authenticate('local', {
-                successRedirect: '/',
+        .post('/login', passport.authenticate('local', {
                 failureRedirect: '/login',
                 failureFlash: true,
-                failureMessage: 'Invalid username or password',
-            })
+                failureMessage: 'Incorrect username or password!',
+            }),
+            (req, res) => {
+                req.toastr.success('Successfully logged in.');
+                return res.redirect('/');
+              }
         )
         .get('/register', (req, res) => {
             return controller.getRegisterForm(req, res);
@@ -27,6 +29,7 @@ module.exports = function(app, data) {
         })
         .get('/logout', (req, res) => {
             req.logout();
+            req.toastr.info('Successfully logged out.');
             return res.redirect('/');
         });
 
