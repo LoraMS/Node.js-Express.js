@@ -1,18 +1,7 @@
 /* globals __dirname */
 /* eslint max-len: ["error", 80] */
 const { ObjectId } = require('mongodb').ObjectId;
-
 const moment = require('moment');
-
-const formidable = require('formidable');
-const fs = require('fs');
-const path = require('path');
-const appDir = path.dirname(path.dirname(__dirname));
-const shelljs = require('shelljs');
-
-// /* eslint-disable-line no-extend-native */
-// const PUBLISHER_PUBLICATIONS_IMAGES_DIRECTORY =
-// path.join(appDir, 'public/Publicated images');
 
 const LATEST_COUNT = 4;
 
@@ -29,85 +18,80 @@ module.exports = function(data) {
             },
             getById(req, res) {
                 const id = req.params.id;
-                const user = req.user;
 
                 return data.publications.getById(id)
                     .then((publication) => {
                         if (!publication) {
                             return res.render('errors/not-found');
                         }
-                        publication.liked = false;
-                        if (user) {
-                            const favourites = req.user.favourites;
-                            for (let i = 0; i < favourites.length; i++) {
-                                if (favourites[i]._id === id) {
-                                    publication.liked = true;
-                                    break;
-                                } else {
-                                    // console.log('not liked');
-                                }
-                            }
-                        }
 
-                        return res.render('publication-views/publication', {
+                        res.render('publication-views/publication', {
                             model: publication,
+                            success: req.session.success,
+                            errors: req.session.errors
                         });
+                        req.session.errors = null;
                     });
             },
             create(req, res) {
                 const images = req.files;
-                const image1 = images[0].path;
-                const image2 = images[1].path;
-                const image3 = images[2].path;              
+                let image1 = '';
+                let image2 = '';
+                let image3 = '';
 
-                /*
-[ { fieldname: 'image',
-    originalname: 'food.jpg',
-    encoding: '7bit',
-    mimetype: 'image/jpeg',
-    destination: './uploads/',
-    filename: '2018-07-27T23-57-43.177Zfood.jpg',
-    path: 'uploads\\2018-07-27T23-57-43.177Zfood.jpg',
-    size: 72350 },
-  { fieldname: 'image',
-    originalname: 'ingredients.jpg',
-    encoding: '7bit',
-    mimetype: 'image/jpeg',
-    destination: './uploads/',
-    filename: '2018-07-27T23-57-43.182Zingredients.jpg',
-    path: 'uploads\\2018-07-27T23-57-43.182Zingredients.jpg',
-    size: 134888 },
-  { fieldname: 'image',
-    originalname: 'team-kitchen.jpg',
-    encoding: '7bit',
-    mimetype: 'image/jpeg',
-    destination: './uploads/',
-    filename: '2018-07-27T23-57-43.196Zteam-kitchen.jpg',
-    path: 'uploads\\2018-07-27T23-57-43.196Zteam-kitchen.jpg',
-    size: 90736 } ]
-                */
-                    const publication = req.body;
-                    const user = req.user;
-                    publication.likes = 0;
-                    publication.dislikes = 0;
-                    publication.comments = [];
-                        
-                    publication.publisher = user.firstname + ' ' + user.lastname;
+                if(images.length === 3){
+                    image1 = images[0].path;
+                    image2 = images[1].path;
+                    image3 = images[2].path;
 
-                    const publisher = {
-                        name: user.firstname + ' ' + user.lastname,
-                        info: publication.publisherinfo,
-                        comments: [],
-                        };
+                } else {
+                    req.toastr.error("Only image files with extension .jpeg, .png, .jpg and .gif are allowed!");
+                    res.redirect('publications/form');
+                    return res.end();
+                }         
 
-                    const destination = {
-                        destination: publication.destination,
-                        };
+                const publication = req.body;
+                const user = req.user;
+                publication.likes = 0;
+                publication.dislikes = 0;
+                publication.comments = [];
+
+                publication.publisher = user.firstname + ' ' + user.lastname;
+                publication.date = new Date().toISOString();
 
                 publication.image1 = image1;
                 publication.image2 = image2;
                 publication.image3 = image3;
 
+                const publisher = {
+                    name: user.firstname + ' ' + user.lastname,
+                    info: publication.publisherinfo,
+                    comments: [],
+                };
+
+                const destination = {
+                    destination: publication.destination,
+                };
+
+                req.checkBody("title", "Title must be at least 5 symbols long.").notEmpty().isLength({min: 5});
+
+                req.checkBody("publisherinfo", "Info is required and must be at least 100 symbols long.").notEmpty().isLength({min: 100});
+
+                req.checkBody("text1", "Description is required and must be at least 200 symbols long.").notEmpty().isLength({min: 200});
+
+                req.checkBody("text2", "Description is required and must be at least 200 symbols long.").notEmpty().isLength({min: 200});
+
+                req.checkBody("text3", "Description is required and must be at least 200 symbols long.").notEmpty().isLength({min: 200});
+            
+                var errors = req.validationErrors();
+                if(errors){  
+                    req.session.errors = errors;
+                    req.session.success = false;
+                    res.redirect('publications/form');
+                } 
+                else {
+                    req.session.success = true;
+                    
                 return Promise
                     .all([
                         data.publications.create(publication),
@@ -157,12 +141,15 @@ module.exports = function(data) {
                         ]);
                     })
                     .then(() => {
+                        req.toastr.success('Your publication was added successfully!')
+                        req.session.errors = null;
                         return res.redirect('/publications');
                     })
                     .catch((error) => {
-                        req.flash('error', error);
+                        req.toastr.error('Error', error);
                         return res.redirect('/publications/form'); // eslint-disable-line
                     });
+                }    
             },
             getLatestPublications(req, res) {
                 return data.publications
@@ -175,7 +162,9 @@ module.exports = function(data) {
                     });
             },
             getPublicationForm(req, res) {
-                return res.render('forms/publication-form');
+                // req.session.errors = null;
+                res.render('forms/publication-form', { success: req.session.success, errors: req.session.errors });
+                req.session.errors = null;
             },
             likePublication(req, res) {
                 const id = req.body.id;
@@ -219,20 +208,16 @@ module.exports = function(data) {
             },
             removePublication(req, res) {
                 const id = req.body.id;
-                const publisher = req.user.username;
+                const name = req.body.publisher;
                 const destination = req.body.destination;
                 const username = req.user.username;
 
                 data.publications.removeById(id);
-                data.publishers.removeByQuery({ name: publisher }, { $pull: { publication: { _id: new ObjectId(id) } } });// eslint-disable-line
+                data.publishers.removeByQuery({ name: name }, { $pull: { publication: { _id: new ObjectId(id) } } });// eslint-disable-line
                 data.destinations.removeByQuery({ destination: destination }, { $pull: { publications: { _id: new ObjectId(id) } } });// eslint-disable-line
                 data.users.removeByQuery({ username: username }, { $pull: { publications: { _id: new ObjectId(id) } } });// eslint-disable-line
 
                 return res.end();
-                // req.method = 'GET';
-                // req.url = '/publications';
-                // res.req = req;
-                // return res.redirect('/publications');
             },
             search(req, res) {
                 const filter = req.query.search;
@@ -247,28 +232,25 @@ module.exports = function(data) {
                     });
             },
             addComment(req, res) {
+                const textComment = req.body.textComment;
                 const comment = {
-                    firstname: req.body.firstname,
-                    lastname: req.body.lastname,
+                    firstname: req.user.firstname,
+                    lastname: req.user.lastname,
                     date: moment().format('LL'),
-                    text: req.body.textComment,
+                    text: textComment,
                 };
                 const id = req.params.id;
-
-                if (comment.firstname === 'undefined' ||
-                     typeof comment.firstname !== 'string') {
-                    return Promise.reject('Invalid name. Please enter again!');
-                }
-
-                if (comment.lastname === 'undefined' ||
-                     typeof comment.lastname !== 'string') {
-                    return Promise.reject('Invalid name. Please enter again!');
-                }
-
-                if (comment.text === 'undefined' ||
-                     typeof comment.text !== 'string') {
-                    return Promise.reject('Comment must be a rext');
-                }
+                
+                req.checkBody("textComment", "Comment must be at least 2 symbols long.").notEmpty().isLength({min: 2}).trim();
+                
+                var errors = req.validationErrors();
+                if(errors){
+                    req.session.errors = errors;
+                    req.session.success = false;
+                    res.redirect('/publications/' + id);
+                } 
+                else {
+                    req.session.success = true;
 
                 return data.publications.getById(id)
                     .then((dbPublication) => {
@@ -278,14 +260,14 @@ module.exports = function(data) {
                         return data.publications.updateById(dbPublication);
                     })
                     .then(() => {
-                        req.flash('info',
-                            'Your comment was added successfully!'); // eslint-disable-line
+                        req.toastr.success('Your comment to publication was added successfully!');
                         return res.redirect('/publications/' + id);
                     })
-                    .catch((err) => {
-                        req.flash('error', err);
+                    .catch((error) => {
+                        req.toastr.error(error);
                         return res.status(400);
                     });
+                }
             },
     };
 };

@@ -30,20 +30,21 @@ module.exports = function (data) {
             req.session.errors = null;
         },
         create(req, res) {
-            const image = req.file.path;
+            let  image = '';
+            if(req.file) {
+                image = req.file.path;
+            } else {
+                req.toastr.error("Only imagefiles with extension .jpeg, .png, .jpg and .gif are allowed!");
+                res.redirect('guides/form');
+                return res.end();
+            }
+            // const image = req.file.path;
             const guide = req.body;
             guide.image = image;
 
             const destination = {
                 destination: guide.destination,
             };
-
-            const country = guide.country;
-            const info = guide.info;
-            const accommodation = guide.accommodation;
-            const food = guide.food;
-            const transportation = guide.transportation;
-            const activities = guide.activities;
 
             req.checkBody("country", "Country must be at least 3 symbols long.").notEmpty().isLength({min: 3});
 
@@ -88,6 +89,7 @@ module.exports = function (data) {
                 })
                 .then(() => {
                     req.toastr.success('Guide added successfully!');
+                    req.session.errors = null;
                     return res.redirect('/guides');
                 })
                 .catch((error) => {
