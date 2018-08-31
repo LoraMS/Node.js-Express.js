@@ -47,7 +47,7 @@ module.exports = function(data) {
                     return res.redirect('back');
                 })
                 .catch((err) => {
-                    req.flash('error', err);
+                    req.toastr.error('error', err);
                     return res.status(400);
                 });
         },
@@ -76,7 +76,8 @@ module.exports = function(data) {
                     // return res.redirect('back');
                 })
                 .catch((err) => {
-                    // req.flash('error', err);
+                    console.log(err);
+                    req.toastr.error('error', err);
                     // return res.status(400);
                 });
         },

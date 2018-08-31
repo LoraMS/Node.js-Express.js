@@ -85,33 +85,6 @@ module.exports = function (data) {
                             return Promise.reject('User already exists');
                         }
 
-                        // const patternName = /^[a-zA-Z0-9]{2,40}$/;
-                        // if (!patternName.test(req.body.firstname) ||
-                        //      !patternName.test(req.body.lastname)) {
-                        //     return Promise.reject(`Name must contain only 
-                        //     alphanumetrical symbols and must be 
-                        //     between 2 and 40 symbols long.`);
-                        // }
-
-                        // const patternEmail = /^\w.+@[a-zA-Z]+?\.[a-zA-Z]{2,3}$/;
-                        // if (!patternEmail.test(req.body.email)) {
-                        //        return Promise.reject(`Email can contain latin
-                        //         letters, numbers, _ and .`);
-                        // }
-
-                        // const patternPassword =
-                        //  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-                        // if (!patternPassword.test(req.body.password)) {
-                        //     return Promise.reject(`Password must be between
-                        //     6 and 16 symbols long, must have at least one number
-                        //     and at least one special character`);
-                        // }
-
-                        // if (req.body.password !== req.body.confirmpassword) {
-                        //     return Promise
-                        //     .reject(`Please confirm password correctly.`);
-                        // }
-
                         return data.users.create(user);
                     })
                     .then((userByName) => {
@@ -120,7 +93,7 @@ module.exports = function (data) {
                         return res.redirect('/login');
                     })
                     .catch((err) => {
-                        req.flash('error', err);
+                        req.toasrt.error('error', err);
                         return res.redirect('/register');
                     });
                 }
