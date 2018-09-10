@@ -177,12 +177,9 @@ module.exports = function(data) {
                             .updateById(publication);
                     })
                     .then(() => {
-                        req.flash('info',
-                            'Your like was added successfully!');
                         return res.redirect('back');
                     })
                     .catch((err) => {
-                        req.flash('error', err);
                         return res.status(400);
                     });
             },
@@ -197,12 +194,9 @@ module.exports = function(data) {
                             .updateById(publication);
                     })
                     .then(() => {
-                        req.flash('info',
-                            'Your like was added successfully!');
                         return res.redirect('back');
                     })
                     .catch((err) => {
-                        req.flash('error', err);
                         return res.status(400);
                     });
             },
@@ -260,7 +254,8 @@ module.exports = function(data) {
                         return data.publications.updateById(dbPublication);
                     })
                     .then(() => {
-                        req.toastr.success('Your comment to publication was added successfully!');
+                        req.toastr.success('Your comment was added successfully!');
+						req.session.errors = null;
                         return res.redirect('/publications/' + id);
                     })
                     .catch((error) => {
