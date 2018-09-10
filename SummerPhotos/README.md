@@ -66,10 +66,10 @@ Summer Photos is Web Application using Node.js, Express.js, MongoDB(Database/Aut
 
 ## Live demo :
 
-[Link](https://summer-photos-89811.herokuapp.com/)
+[Preview](https://summer-photos-89811.herokuapp.com/)
 
 ## Source code :
 
-[Link](https://github.com/LoraMS/Node.js-Express.js/tree/master/SummerPhotos)
+[GitHub](https://github.com/LoraMS/Node.js-Express.js/tree/master/SummerPhotos)
 
 
