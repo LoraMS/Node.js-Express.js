@@ -1,0 +1,45 @@
+extends ../_layout
+include ../_mixins/_aside
+
+block scripts
+    script(src="/libs/jquery/dist/jquery.js")
+    script(src="/libs/bootstrap/dist/js/bootstrap.js")
+    script(src="/static/js/latest.js")
+    script(src="/static/js/popular.js")  
+    script(src="/static/js/destinations.js")      
+
+block container
+    .container.profile
+        .row
+            .col-md-3.col-md-offset-1
+                +asides
+            .col-md-8
+                .row
+                    .col-md-12
+                        img(src="/static/images/avatar.png")
+                    .col-md-12
+                        .row
+                            .col-md-3.col-md-offset-2 First Name : 
+                            .col-md-7 #{user.firstname}
+                            .col-md-3.col-md-offset-2 Last Name : 
+                            .col-md-7 #{user.lastname}
+                            .col-md-3.col-md-offset-2 User Name: 
+                            .col-md-7 #{user.username}
+                            .col-md-3.col-md-offset-2 Email Address: 
+                            .col-md-7 #{user.email}
+                            .col-md-3.col-md-offset-2 Registered: 
+                            .col-md-7.date #{user.date}
+                            .col-md-3.col-md-offset-2 Your Favorites:
+                            .col-md-7
+                                if user.favourites.length
+                                    a(href="/user/favourites") Go to favorites
+                                else
+                                    div 
+                                        | You have no favorites list yet.
+                            .col-md-3.col-md-offset-2 Your Publications:
+                            .col-md-7
+                                if user.publications.length
+                                    a(href="/user/publications") Go to your publications
+                                else
+                                    div 
+                                        | You have no publications yet.

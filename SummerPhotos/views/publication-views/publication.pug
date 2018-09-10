@@ -1,0 +1,108 @@
+extends ../_layout
+include ../_mixins/_aside
+
+block scripts                     
+    script(src="/libs/jquery/dist/jquery.js")
+    script(src="/libs/bootstrap/dist/js/bootstrap.js")
+    script(src="/libs/moment/moment.js")
+    script(src="/static/js/format-date.js") 
+    script(src="/static/js/popover.js")
+    script(src="/static/js/latest.js") 
+    script(src="/static/js/popular.js")                                                         
+    script(src="/static/js/destinations.js") 
+    script(src="/static/js/add-favourite.js")
+    script(src="/static/js/remove-favourite.js")
+    script(src="/static/js/rate-publication.js")
+    script(src="/static/js/remove-publication.js")        
+    
+block container  
+    .publication.container
+        .row
+            .col-md-3.col-md-offset-1
+                +asides
+            .col-md-8.single-publication-container
+                h2 
+                    = model.title
+                .date-postBy
+                    span.date
+                        = model.date
+                    span | 
+                    span.post-by by 
+                        = model.publisher   
+                    span | destination
+                    span.destination-info
+                        = model.destination 
+                    span | comments
+                    span.comments-info
+                        = model.comments.length 
+                    span | rating
+                    span.rating-info
+                        = model.likes - model.dislikes
+                img(src="/" + model.image1, alt="image")
+                .publication-text 
+                    = model.text1
+                img(src="/" + model.image2, alt="image")
+                .publication-text 
+                    = model.text2
+                img(src="/" + model.image3, alt="image")
+                .publication-text 
+                    = model.text3
+                if user    
+                    .icons
+                        .row
+                            //- != messages()
+                            .col-md-7.col-md-offset-5.text-right
+                                //- button(type="button" class="btn btn-default btn-xs edit" data-toggle="popover" data-content="Edit publication")
+                                //-     span(class="glyphicon glyphicon-pencil" aria-hidden="true")
+                                if user.firstname + " " + user.lastname == model.publisher || user.role === "admin"
+                                    button(type="button" class="btn btn-default btn-xs remove" data-toggle="popover" data-content="Remove publication" data-id=model._id)
+                                        span(class="glyphicon glyphicon-remove" aria-hidden="true")
+                                button(type="button" class="btn btn-default btn-xs favourite" data-toggle="popover" data-content="Add to favourites" data-id=model._id)
+                                        span(class="glyphicon glyphicon-star-empty" aria-hidden="true")
+                                //-     button(type="button" class="btn btn-default btn-xs remove-favourite" data-toggle="popover" data-content="Remove from favourites" data-id=model._id)
+                                //-         span(class="glyphicon glyphicon-star" aria-hidden="true")
+                                button(type="button" class="btn btn-default btn-xs like" data-toggle="popover" data-content="Like" data-id=model._id)
+                                    span(class="glyphicon glyphicon-thumbs-up" aria-hidden="true")
+                                button(type="button" class="btn btn-default btn-xs dislike" data-toggle="popover" data-content="Dislike" data-id=model._id)
+                                    span(class="glyphicon glyphicon-thumbs-down" aria-hidden="true")
+                .publisher    
+                    h4 Posted by
+                    .row
+                        .col-md-1
+                            img.img-circle(src="../../static/images/publisher.JPG")
+                        .col-md-11
+                            h5 
+                                = model.publisher
+                            h6 Blogger
+                            p 
+                                = model.publisherinfo
+                .comments-container
+                    != toasts
+                    h4 Comments
+                    if model.comments.length
+                        .row
+                            each element in model.comments
+                                .col-md-1
+                                    img(src="../../static/images/comments.JPG")
+                                .col-md-11
+                                    h5 
+                                        = element.firstname 
+                                        span 
+                                            = element.lastname
+                                    h6 
+                                        = element.date
+                                    p 
+                                        = element.text
+                    else
+                        div 
+                            | This publication has no comments yet.   
+                    if errors 
+                        for error in errors
+                            p.alert.alert-danger!= error.msg             
+                    h4 Send a Comment
+                    form(method="POST" action="/publications/" + model._id + "/comments")
+                        .form-group
+                            label(for="text-comment") Comment
+                            textarea(id="text-comment" class="form-control" rows="5" cols="25" required="required" name="textComment" placeholder="Comment")
+                        div
+                            button(type="submit" class="btn btn-default") Add Comment

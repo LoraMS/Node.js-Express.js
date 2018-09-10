@@ -1,0 +1,17 @@
+mixin asides
+    aside
+        div
+            form.navbar-form(role="search" method="GET" action="/publications/search")
+                .input-group
+                    input.form-control(type="text" placeholder="Search for ..." name="search")
+                    div.input-group-btn
+                        button.btn.btn-default(type="submit")
+                            i.glyphicon.glyphicon-search
+        ul.nav.nav-stacked.nav-destinations
+            li(role="presentation" class="active")
+                a(href="/destinations") All Destinations
+        .filtered   
+            h5 Most Popular Publishers
+            .row.popular     
+            h5 Recent Posts
+            .row.latest                              

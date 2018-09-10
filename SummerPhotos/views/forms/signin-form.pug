@@ -1,0 +1,31 @@
+extends ../_layout
+block container
+    .signin-form.container
+        != toasts 
+        != messages()    
+        .well
+            img.img-circle(src="/static/images/avatar.png")
+            form(action="/login" method="POST")
+                .row
+                    .col-md-12
+                        .form-group
+                            label(for="username") User Name
+                            .input-group
+                                span.input-group-addon
+                                    span.glyphicon.glyphicon-user
+                                input#name.form-control(type="text" name="username" placeholder="Enter name" required="required")
+                    .col-md-12
+                        .form-group
+                            label(for="password") Password
+                            .input-group
+                                span.input-group-addon
+                                    span.glyphicon.glyphicon-lock
+                                input#password.form-control(type="password" name="password" placeholder="Enter password" required="required")
+                    .col-md-12
+                        button(type="submit" class="btn btn-default btn-block pull-right" id="btn-signin") Sign In
+                    .col-md-12
+                        .divider(role="separator")
+                    .col-md-12.text-muted
+                        | Need an account? 
+                        a(href="/register") Sign Up
+                    

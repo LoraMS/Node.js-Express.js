@@ -1,0 +1,71 @@
+extends ../_layout
+block scripts                     
+    script(src="/libs/jquery/dist/jquery.js")
+    script(src="/libs/bootstrap/dist/js/bootstrap.js")
+block container
+    .guide-form.container
+        if errors 
+            for error in errors
+                p.alert.alert-danger
+                    span(class="glyphicon glyphicon-exclamation-sign" aria-hidden="true") 
+                    != error.msg
+        .well.well-sm
+            h3.text-center Add Guide
+            form(action="/guides" method="POST" enctype="multipart/form-data")
+                .row
+                    .col-md-6
+                        .form-group
+                            label(for="title") Enter country
+                                .input-group
+                                    span.input-group-addon
+                                        span.glyphicon.glyphicon-list
+                                    input.form-control#title(type="text" name="country" placeholder="Enter country" required="required")
+                        .form-group
+                            label(for="info") Enter short info
+                                textarea#info.form-control(name="info" placeholder="Short info" rows="3" cols="25" required="required")
+                        .form-group
+                            label(for="image") Add image
+                                input#image1(type="file" name="image" required="required")
+                        h6
+                            |  Choose destination
+                        .destinations-form
+                            div
+                                label(for="africa")
+                                    input#africa(type='radio', name='destination', checked='checked', required="required", value="Africa")
+                                    |  Africa
+                            div
+                                label(for="asia")
+                                    input#asia(type='radio', name='destination', required="required", value="Asia")
+                                    |  Asia
+                            div
+                                label(for="europe")
+                                    input#europe(type='radio', name='destination', required="required", value="Europe")
+                                    |   Europe
+                            div
+                                label(for="north-america")
+                                    input#north-america(type="radio", name="destination", required="required", value="North America")
+                                    |   North America
+                            div
+                                label(for="south-america")
+                                    input#south-america(type="radio", name="destination", required="required", value="South America")
+                                    |   South America
+                            div
+                                label(for="australia")
+                                    input#australia(type="radio", name="destination", required="required", value="Australia and Pacific")
+                                    |   Australia and Pacific      
+                    .col-md-6
+                        .form-group
+                            label(for="accommodation") Enter accommodation description
+                                textarea#accommodation.form-control(name="accommodation" placeholder="Accommodation description" rows="3" cols="25" required="required")
+                        .form-group
+                            label(for="food") Enter food description
+                                textarea#food.form-control(name="food" placeholder="Food description" rows="3" cols="25" required="required")
+                        .form-group
+                            label(for="transportation") Enter transportation description
+                                textarea#transportation.form-control(name="transportation" placeholder="Transportation description" rows="3" cols="25" required="required")
+                        .form-group
+                            label(for="activities") Enter activities description
+                                textarea#activities.form-control(name="activities" placeholder="Activities description" rows="3" cols="25" required="required")
+                    .col-md-11
+                        button(type="submit" id="addGuide" class="btn btn-default pull-right add-guide") 
+                            |   Add Guide                    

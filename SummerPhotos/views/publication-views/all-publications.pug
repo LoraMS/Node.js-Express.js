@@ -1,0 +1,38 @@
+extends ../_layout
+include ../_mixins/_aside
+block scripts                     
+    script(src="/libs/jquery/dist/jquery.js")
+    script(src="/libs/bootstrap/dist/js/bootstrap.js")
+    script(src="/libs/moment/moment.js")
+    script(src="/static/js/format-date.js") 
+    script(src="/static/js/latest.js")
+    script(src="/static/js/popular.js")
+    script(src="/static/js/destinations.js")      
+
+block container  
+    .all-publications.container
+        .row
+            .col-md-3.col-md-offset-1
+                +asides
+            .col-md-8
+                .row
+                    .col-md-12.text-right#add
+                        a(href="publications/form" 
+                        id="publicationForm" class="btn btn-default btn-block pull-right" role="button") 
+                            | Tell About Your Adventure
+                .row
+                    each item in model
+                        .col-md-4
+                            .publications-container
+                                img(src= "/" + item.image1 alt="image")
+                                .caption
+                                    .description 
+                                        .date-postBy
+                                            span.date #{item.date}
+                                            span | 
+                                            span.post-by by #{item.publisher} 
+                                        h3 #{item.title}
+                                        p 
+                                            | #{item.text1}
+                                            p
+                                                a(href="/publications/" + item._id , class="btn btn-default",  role="button")  Read more...

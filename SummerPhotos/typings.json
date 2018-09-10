@@ -1,0 +1,5 @@
+{
+  "globalDependencies": {
+    "express-validator": "registry:dt/express-validator#2.20.4+20160818215330"
+  }
+}

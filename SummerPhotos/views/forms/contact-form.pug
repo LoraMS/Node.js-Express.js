@@ -1,0 +1,39 @@
+extends ../_layout
+
+block scripts 
+    script(src="/libs/jquery/dist/jquery.js")
+    script(src="/libs/bootstrap/dist/js/bootstrap.js")
+    script(src="/static/js/contact-form-send.js")
+
+block container 
+    .container.contact-form
+        != toasts
+        .well.well-sm
+            form(action="/contact" method="POST")
+                .row
+                    .col-md-6
+                        .form-group
+                            label(for="name") Name
+                                .input-group
+                                    span.input-group-addon
+                                        span.glyphicon.glyphicon-user
+                                    input.form-control#name(type="text" name="name" placeholder="Enter name" required="required")
+                        .form-group
+                            label(for="email") Email Address
+                            .input-group
+                                span.input-group-addon
+                                    span.glyphicon.glyphicon-envelope
+                                input.form-control#email(type="email" name="email" placeholder="Enter email" required="required")
+                        .form-group
+                            label(for="subject") Subject                 
+                            select#subject(name="subject" class="form-control" required="required")
+                                    option(value="na" selected="") Choose One:
+                                    option(value="service") General Customer Service
+                                    option(value="suggestions") Suggestions
+                                    option(value="product") Product Support
+                    .col-md-6
+                        .form-group
+                            label(for="message") Message
+                            textarea(name="message" id="message" class="form-control" rows="9" cols="25" required="required" placeholder="Message")
+                    .col-md-12
+                        button(type="submit" class="btn btn-default pull-right" id="btnContactUs") Send Message

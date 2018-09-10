@@ -1,0 +1,50 @@
+extends ../_layout
+include ../_mixins/_aside
+block scripts                     
+    script(src="/libs/jquery/dist/jquery.js")
+    script(src="/libs/bootstrap/dist/js/bootstrap.js")
+    script(src="/libs/moment/moment.js")
+    script(src="/static/js/format-date.js") 
+    script(src="/static/js/latest.js")    
+    script(src="/static/js/popular.js")
+    script(src="/static/js/destinations.js")  
+
+block container  
+    .destinations.container
+        .row
+            .col-md-3.col-md-offset-1
+                +asides
+            .col-md-8
+                .single-destination-container
+                    h3.text-center #{model.destination}
+                    .row
+                        .col-md-4.info 
+                            img(src= "/static/images/"+model.map, alt="image")
+                        .col-md-8.info
+                            p #{model.info}
+                        .col-md-12
+                            h4.text-center Publications about #{model.destination}
+                            each element in model.publications
+                                .publications-container-info.col-md-6
+                                    div
+                                        img(src="/" + element.image, alt="image")
+                                    .text-center
+                                        .date-postBy
+                                            span.date #{element.date}
+                                            span | 
+                                            span.post-by posted by #{element.publisher} 
+                                        div
+                                            a(href="/publications/" + element._id) #{element.title}
+                            .col-md-12
+                                h4.text-center Guides about #{model.destination}
+                                each element in model.guides
+                                    .guides-container-info.col-md-6
+                                        div
+                                            img(src="/" + element.image, alt="image")
+                                        .text-center
+                                            .date-postBy
+                                                span.destination #{element.destination} 
+                                                span | 
+                                                span.post-by posted by admin
+                                            div
+                                                a(href="/guides/" + element._id) #{element.country}

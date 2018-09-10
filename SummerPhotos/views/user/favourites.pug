@@ -1,0 +1,38 @@
+extends ../_layout
+include ../_mixins/_aside
+
+block scripts
+    script(src="/libs/jquery/dist/jquery.js")
+    script(src="/libs/bootstrap/dist/js/bootstrap.js")
+    script(src="/static/js/latest.js")
+    script(src="/static/js/popular.js")  
+    script(src="/static/js/destinations.js")
+    script(src="/static/js/popover.js")  
+    script(src="/static/js/remove-favourite.js")   
+
+block container
+    .container.favourites
+        .row
+            .col-md-3.col-md-offset-1
+                +asides
+            .col-md-8
+                h4.text-center Your Favourite publications
+                != messages()
+                if user.favourites.length
+                    .row
+                        each element in user.favourites
+                                .publications-container-info.col-md-6
+                                    div.text-right
+                                        button(type="button" class="btn btn-default btn-xs remove-favourite-user-page" data-toggle="popover" data-content="Remove" data-id=element._id)
+                                                span(class="glyphicon glyphicon-remove" aria-hidden="true")
+                                        img(src="/" + element.image, alt="image")
+                                    .text-center
+                                        .date-postBy
+                                            span.date #{element.date}
+                                            span | 
+                                            span.post-by posted by #{element.publisher} 
+                                        div
+                                            a(href="/publications/" + element._id) #{element.title}
+                else
+                    div 
+                        | You have no favourites yet.    

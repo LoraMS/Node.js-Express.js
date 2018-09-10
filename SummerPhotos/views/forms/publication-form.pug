@@ -1,0 +1,79 @@
+extends ../_layout
+block scripts                     
+    script(src="/libs/jquery/dist/jquery.js")
+    script(src="/libs/bootstrap/dist/js/bootstrap.js")
+    //- script(src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
+    //- script(src="/static/js/datepicker.js")
+    //- script(src="/libs/moment/moment.js")
+    //- script(src="/static/js/format-date.js") 
+block container
+    .publication-form.container
+        != messages()
+        if errors 
+            for error in errors
+                p.alert.alert-danger
+                    span(class="glyphicon glyphicon-exclamation-sign" aria-hidden="true") 
+                    != error.msg
+        .well.well-sm
+            h3.text-center Tell About Your Adventure
+            form(action="/publications" method="POST" enctype="multipart/form-data")
+                .row
+                    .col-md-6
+                        .form-group
+                            label(for="title") Enter title of your publication
+                                .input-group
+                                    span.input-group-addon
+                                        span.glyphicon.glyphicon-list
+                                    input.form-control#title(type="text" name="title" placeholder="Enter title" required="required")
+                        .form-group
+                            label(for="publisher-info") Present the publisher in few words
+                                textarea#publisher-info.form-control(name="publisherinfo" placeholder="Enter publisher info" rows="8" cols="25" required="required")
+                        h6
+                            |  Choose destination
+                        .destinations-form
+                            div
+                                label(for="africa")
+                                    input#africa(type='radio', name='destination', checked='checked', required="required", value="Africa")
+                                    |  Africa
+                            div
+                                label(for="asia")
+                                    input#asia(type='radio', name='destination', required="required", value="Asia")
+                                    |  Asia
+                            div
+                                label(for="europe")
+                                    input#europe(type='radio', name='destination', required="required", value="Europe")
+                                    |   Europe
+                            div
+                                label(for="north-america")
+                                    input#north-america(type="radio", name="destination", required="required", value="North America")
+                                    |   North America
+                            div
+                                label(for="south-america")
+                                    input#south-america(type="radio", name="destination", required="required", value="South America")
+                                    |   South America
+                            div
+                                label(for="australia")
+                                    input#australia(type="radio", name="destination", required="required", value="Australia and Pacific")
+                                    |   Australia and Pacific       
+                    .col-md-6
+                        .form-group
+                            label(for="image") Add image
+                                input#image1(type="file" name="image" required="required")
+                        .form-group
+                            label(for="text1") Enter description to image
+                                textarea#text1.form-control(name="text1" placeholder="Enter description" rows="3" cols="25" required="required")
+                        .form-group
+                            label(for="image") Add image
+                                input#image2(type="file" name="image" required="required")
+                        .form-group
+                            label(for="text2") Enter description to image
+                                textarea#text2.form-control(name="text2" placeholder="Enter description" rows="3" cols="25" required="required")
+                        .form-group
+                            label(for="image") Add image
+                                input#image3(type="file" name="image" required="required")
+                        .form-group
+                            label(for="text3") Enter description to image
+                                textarea#text3.form-control(name="text3" placeholder="Enter description" rows="3" cols="25" required="required")
+                    .col-md-11
+                        button(type="submit" id="addPublication" class="btn btn-default pull-right add-publication") 
+                            |   Add Publication                    
