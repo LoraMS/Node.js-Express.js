@@ -39,12 +39,6 @@ Summer Photos is Web Application using Node.js, Express.js, MongoDB(Database/Aut
 16.	Display authors
 17.	Write comments to author
 
-## Home page: 
-
-1.	Most recent publication are displayed, sorted by date
-2.	Top authors are displayed, sorted by publications number
-3.	Destinations are shown
-
 ## Users: 
 
 1.	Everyone (not registered) will see
