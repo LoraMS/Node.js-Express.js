@@ -56,9 +56,10 @@ Summer Photos is Web Application using Node.js, Express.js, MongoDB(Database/Aut
 2.	Regular user
   -	can post publication
 	- can rate publication
-  - can add publication to favorite
+  -	can add publication to favorite
+  -	can delete own publication
   -	can write comments
-3.	User is admin of its own publication
+3.	Admin
   - can delete publication
   - can create guide
   - can delete guide
