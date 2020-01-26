@@ -58,6 +58,10 @@ Summer Photos is Web Application using Node.js, Express.js, MongoDB(Database/Aut
   - can create guide
   - can delete guide
   
+  
+## Project Requirements  
+  
+[Requirements](https://github.com/TelerikAcademy/Web-Applications-with-Node.js/tree/master/Course%20Project)  
 
 ## Live demo :
 
