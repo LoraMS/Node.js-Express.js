@@ -23,7 +23,7 @@ block container
                         span#guide-destination #{model.destination}
                     p
                         |    #{model.info}
-                    if user.role === "admin"
+                    if user && user.role === "admin"
                         button(type="button" class="btn btn-default btn-xs remove" data-toggle="popover" data-content="Remove guide" data-id=model._id)
                             span(class="glyphicon glyphicon-remove" aria-hidden="true")
                     img(src = "/" + model.image, alt="image")
