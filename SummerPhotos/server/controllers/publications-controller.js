@@ -255,7 +255,7 @@ module.exports = function(data) {
                     })
                     .then(() => {
                         req.toastr.success('Your comment was added successfully!');
-						req.session.errors = null;
+                        req.session.errors = null;
                         return res.redirect('/publications/' + id);
                     })
                     .catch((error) => {
